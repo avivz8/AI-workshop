@@ -1,0 +1,10 @@
+---
+description: Standards for testable code using Yarn and Node 23
+globs: "**/*.{tsx,ts}"
+alwaysApply: true
+---
+# QA Testability Standards
+- Every interactive element (button, input, link) MUST have a `data-testid` attribute.
+- Use **Yarn** for all package management (never npm).
+- All code must be compatible with **Node 23**.
+- Components must show a "Loading..." state during API calls.
