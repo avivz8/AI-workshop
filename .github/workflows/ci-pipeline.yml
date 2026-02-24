@@ -11,6 +11,7 @@ jobs:
     env:
       npm_config_registry: https://registry.npmjs.org/
       COREPACK_ENABLE_DOWNLOAD_PROMPT: "0"
+      YARN_ENABLE_HARDENED_MODE: "0"
 
     steps:
       - name: Checkout code
