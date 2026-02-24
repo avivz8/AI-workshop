@@ -7,7 +7,7 @@ on:
 
 jobs:
   ci:
-    runs-on: ubuntu-slim
+    runs-on: ubuntu-latest
     env:
       YARN_NPM_REGISTRY_SERVER: https://registry.npmjs.org/
       COREPACK_ENABLE_DOWNLOAD_PROMPT: "0"
