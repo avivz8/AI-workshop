@@ -1,5 +1,5 @@
-import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
+import { vi } from 'vitest';
 import App from './App';
 
 const mockTodos = [
@@ -8,11 +8,12 @@ const mockTodos = [
 ];
 
 beforeEach(() => {
-  global.fetch = jest.fn(() =>
+  global.fetch = vi.fn(() =>
     Promise.resolve({
+      ok: true,
       json: () => Promise.resolve(mockTodos),
     })
-  ) as jest.Mock;
+  ) as unknown as typeof fetch;
 });
 
 test('renders heading', async () => {
