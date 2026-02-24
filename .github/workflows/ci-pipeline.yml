@@ -10,6 +10,7 @@ jobs:
     runs-on: ubuntu-slim
     env:
       npm_config_registry: https://registry.npmjs.org/
+      COREPACK_ENABLE_DOWNLOAD_PROMPT: "0"
 
     steps:
       - name: Checkout code
@@ -24,7 +25,7 @@ jobs:
         run: corepack enable
 
       - name: Install dependencies
-        run: yarn install --immutable --ignore-engines
+        run: yarn install --immutable
 
       - name: Run unit tests
         run: yarn test:unit
