@@ -1,0 +1,44 @@
+name: CI Pipeline
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+  workflow_dispatch:
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    env:
+      YARN_NPM_REGISTRY_SERVER: https://registry.npmjs.org/
+      COREPACK_ENABLE_DOWNLOAD_PROMPT: "0"
+      YARN_ENABLE_HARDENED_MODE: "0"
+      YARN_ENABLE_IMMUTABLE_INSTALLS: "false"
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node 23
+        uses: actions/setup-node@v4
+        with:
+          node-version: 23
+
+      - name: Enable Corepack
+        run: corepack enable
+
+      - name: Strip private registry URLs from lockfile
+        run: |
+          sed -i 's/::__archiveUrl=[^"]*//g' yarn.lock
+          sed -i 's/%3A%3A__archiveUrl=[^#"]*//g' yarn.lock
+
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Run unit tests
+        run: yarn test:unit
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps
+
+      - name: Run E2E tests
+        run: yarn test:e2e
