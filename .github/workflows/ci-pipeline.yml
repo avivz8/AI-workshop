@@ -20,8 +20,8 @@ jobs:
         with:
           node-version: 23
 
-      - name: Install Yarn
-        run: npm install -g yarn
+      - name: Enable Corepack
+        run: corepack enable
 
       - name: Install dependencies
         run: yarn install --immutable --ignore-engines
