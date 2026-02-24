@@ -9,7 +9,7 @@ jobs:
   ci:
     runs-on: ubuntu-slim
     env:
-      npm_config_registry: https://registry.npmjs.org/
+      YARN_NPM_REGISTRY_SERVER: https://registry.npmjs.org/
       COREPACK_ENABLE_DOWNLOAD_PROMPT: "0"
       YARN_ENABLE_HARDENED_MODE: "0"
 
@@ -24,6 +24,9 @@ jobs:
 
       - name: Enable Corepack
         run: corepack enable
+
+      - name: Strip private registry URLs from lockfile
+        run: sed -i 's/::__archiveUrl=[^"]*//g' yarn.lock
 
       - name: Install dependencies
         run: yarn install
