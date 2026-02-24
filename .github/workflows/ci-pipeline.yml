@@ -12,6 +12,7 @@ jobs:
       YARN_NPM_REGISTRY_SERVER: https://registry.npmjs.org/
       COREPACK_ENABLE_DOWNLOAD_PROMPT: "0"
       YARN_ENABLE_HARDENED_MODE: "0"
+      YARN_ENABLE_IMMUTABLE_INSTALLS: "false"
 
     steps:
       - name: Checkout code
@@ -26,7 +27,9 @@ jobs:
         run: corepack enable
 
       - name: Strip private registry URLs from lockfile
-        run: sed -i 's/::__archiveUrl=[^"]*//g' yarn.lock
+        run: |
+          sed -i 's/::__archiveUrl=[^"]*//g' yarn.lock
+          sed -i 's/%3A%3A__archiveUrl=[^#"]*//g' yarn.lock
 
       - name: Install dependencies
         run: yarn install
