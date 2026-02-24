@@ -13,12 +13,18 @@ function App() {
 
   useEffect(() => {
     fetch('https://jsonplaceholder.typicode.com/todos?_limit=10')
-      .then((res) => res.json())
+      .then((res) => {
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        return res.json();
+      })
       .then((data) => {
         setTodos(data);
         setLoading(false);
       })
-      .catch(() => setLoading(false));
+      .catch((err) => {
+        console.error('Failed to fetch todos:', err);
+        setLoading(false);
+      });
   }, []);
 
   const handleToggle = (id: number) => {

@@ -1,0 +1,36 @@
+name: CI Pipeline
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+  workflow_dispatch:
+
+jobs:
+  ci:
+    runs-on: ubuntu-slim
+    env:
+      npm_config_registry: https://registry.npmjs.org/
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node 23
+        uses: actions/setup-node@v4
+        with:
+          node-version: 23
+
+      - name: Install Yarn
+        run: npm install -g yarn
+
+      - name: Install dependencies
+        run: yarn install --immutable --ignore-engines
+
+      - name: Run unit tests
+        run: yarn test:unit
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps
+
+      - name: Run E2E tests
+        run: yarn test:e2e
